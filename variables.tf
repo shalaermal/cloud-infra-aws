@@ -27,3 +27,8 @@ variable "allowed_ssh_cidr" {
   type    = string
   default = "0.0.0.0/0"
 }
+
+variable "allowed_http_cidr" {
+  type    = string
+  default = "0.0.0.0/0"
+}
