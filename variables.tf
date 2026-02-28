@@ -4,7 +4,6 @@ variable "project" {
   default = "aws-infra-cloud"
 }
 
-
 # EC2 instance type
 variable "instance_type" {
   type    = string
@@ -15,4 +14,21 @@ variable "instance_type" {
 variable "key_name" {
   type    = string
   default = null
+}
+
+# Region
+variable "region" {
+  type    = string
+  default = "us-east-1"
+}
+
+# Security group rules
+variable "allowed_ssh_cidr" {
+  type    = string
+  default = "0.0.0.0/0"
+}
+
+variable "allowed_http_cidr" {
+  type    = string
+  default = "0.0.0.0/0"
 }

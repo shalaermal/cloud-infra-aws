@@ -10,3 +10,15 @@ resource "aws_instance" "web" {
   Name = "${var.project}-web"
   }
 
+# Latest Amazon Linux 2023 AMI(x86_64) via SSM
+data "aws_ssm_parameter" "al2023" {
+  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64"
+}
+
+# Pick a default subnet from the default VPC
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
