@@ -22,3 +22,14 @@ data "aws_subnets" "default" {
     values = [data.aws_vpc.default.id]
   }
 }
+
+  # Minimal Python web server serving "Hello World"
+  user_data = <<EOF
+  #!/bin/bash
+  dnf -y install python3
+  echo "Hello World" > /home/ec2-user/index.html
+  cd /home/ec2-user
+  nohup python3 -m http.server 80 --bind 0.0.0.0 >/var/log/web.log 2>&1 &
+  EOF
+
+}
