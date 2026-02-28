@@ -1,165 +1,93 @@
-# AWS Cloud Infrastructure with Terraform
+# Cloud Infrastructure on AWS (Terraform)
 
-This project provisions AWS infrastructure using Terraform.
-
-It creates a production-style environment including:
-
-- VPC
-- Public & Private Subnets
-- Internet Gateway
-- NAT Gateway
-- Route Tables
-- Security Groups
-- EC2 Instance
-- SQS Queue
-
-The infrastructure is designed to follow best practices while remaining simple and free-tier friendly.
+Provisioning AWS infrastructure using Terraform (Infrastructure as Code).
 
 ---
 
-## Architecture Overview
+## Overview
 
-### Infrastructure Diagram
+This project provisions:
 
-![Architecture Diagram](screenshots/architecture.png)
+- EC2 instance (Amazon Linux 2023)
+- Security Group (SSH + HTTP)
+- Default VPC usage
+- SQS Queue
+- Internet Gateway routing
+- Public IP exposure
 
-The infrastructure consists of:
+Infrastructure lifecycle:
+provision → validate → destroy
 
-### Networking
-- Custom VPC
-- Public Subnet
-- Private Subnet
-- Internet Gateway
-- NAT Gateway
-- Route Tables
+---
 
-### Compute
-- EC2 instance deployed inside the VPC
+## Architecture
 
-### Messaging
-- SQS Queue for decoupled communication
+![Architecture](screenshots/architecture.png)
+
+Flow:
+
+Internet → Internet Gateway → EC2 (Public Subnet)  
+EC2 → Security Group → HTTP (Port 80)
 
 ---
 
 ## Tech Stack
 
 - Terraform
-- AWS VPC
 - AWS EC2
+- AWS VPC
+- AWS Security Groups
 - AWS SQS
-- AWS IAM
+- Amazon Linux 2023
 
 ---
 
-## Prerequisites
+## Deployment Evidence
 
-Make sure you have:
+### Terraform Apply
 
-- AWS account
-- AWS CLI configured
-- Terraform installed
+![Terraform Apply](screenshots/01-terraform-apply-success.png)
 
-Verify Terraform installation:
-
-```bash
-terraform -v
-```
+Shows successful resource creation:
+- EC2 instance
+- Security group
+- SQS queue
+- Public IP output
 
 ---
 
-## Clone Repository
+### EC2 Instance Running
 
-```bash
-git clone https://github.com/shalaermal/cloud-infra-aws.git
-cd cloud-infra-aws
-```
+![EC2 Instance](screenshots/02-ec2-instance-running.png)
 
----
-
-## Initialize Terraform
-
-```bash
-terraform init
-```
+Instance state: Running  
+Instance type: t2.micro  
+Public IP assigned  
 
 ---
 
-## Review Execution Plan
+### Security Group Configuration
 
-```bash
-terraform plan
-```
+![Security Group](screenshots/03-security-group-config.png)
 
----
-
-## Apply Infrastructure
-
-```bash
-terraform apply
-```
-
-Type `yes` when prompted.
+Inbound rules:
+- 22 (SSH)
+- 80 (HTTP)
+- 443 (HTTPS)
 
 ---
 
-## Access the EC2 Instance
+### Route Table (Internet Gateway)
 
-After deployment, Terraform will output the public IP of the EC2 instance.
+![Route Table](screenshots/04-route-table-igw.png)
 
-Example:
-
-```bash
-curl http://<EC2_PUBLIC_IP>
-```
-
-(Replace `<EC2_PUBLIC_IP>` with the output value.)
+Route:
+- `0.0.0.0/0 → Internet Gateway`
 
 ---
 
-## Destroy Infrastructure
+### Terraform Destroy
 
-To avoid AWS charges, destroy the infrastructure after testing:
+![Terraform Destroy](screenshots/05-terraform-destroy.png)
 
-```bash
-terraform destroy
-```
-
----
-
-## Design Decisions
-
-- Uses separate public and private subnets
-- NAT Gateway allows private subnet outbound access
-- SQS used for decoupling
-- Infrastructure modular and reusable
-- AMI retrieved via AWS SSM Parameter Store
-
----
-
-## Trade-offs & Assumptions
-
-- Designed for simplicity and learning purposes
-- Not production-hardened (no autoscaling, no ALB, no HA setup)
-- Focused on infrastructure fundamentals
-- Free-tier conscious design
-
----
-
-## What This Project Demonstrates
-
-- Infrastructure as Code with Terraform
-- AWS VPC design
-- Public and private networking
-- Secure EC2 deployment
-- Cloud architecture fundamentals
-- Terraform workflow (init → plan → apply → destroy)
-
----
-
-## Project Status
-
-- Infrastructure deploys successfully
-- Networking configured correctly
-- EC2 accessible via public IP
-- SQS queue created
-- Clean teardown supported via `terraform destroy`
+All infrastructure successfully destroyed.
