@@ -1,4 +1,4 @@
-# DevOps Challenge - Infrastructure as Code with Terraform
+# Cloud Infrastructure - AWS
 
 This project provisions a basic cloud environment on AWS using Terraform to demonstrate Infrastructure as Code (IaC) principles.  
 
