@@ -21,7 +21,7 @@ The infrastructure is designed to follow best practices while remaining simple a
 
 ### Infrastructure Diagram
 
-![Architecture Diagram](architecture.png)
+![Architecture Diagram](screenshots/architecture.png)
 
 The infrastructure consists of:
 
